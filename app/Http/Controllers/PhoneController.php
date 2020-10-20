@@ -47,7 +47,7 @@ class PhoneController extends Controller
           $phoneNew = new Phone;
           $phoneNew->modello = $data['modello'];
           $phoneNew->anno = $data['anno'];
-          $phoneNew->description = $data['desc'];
+          $phoneNew->description = $data['description'];
           $saved = $phoneNew->save();
           dd($saved);
     }
@@ -58,10 +58,19 @@ class PhoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+
+     public function show(Phone $phone)
+     {
+         // dd($phone);
+         // $phone = Phone::find($id);
+         return view('show',compact('phone'));
+     }
+
+    // public function show($id)
+    // {
+    //     $phone = Phone::find($id);
+    //     return view('show',compact('phone'));
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -69,9 +78,9 @@ class PhoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Phone $phone)
     {
-        //
+        return view('create',compact('phone'));
     }
 
     /**
@@ -81,9 +90,11 @@ class PhoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Phone $phone)
     {
-        //
+        $data = $request->all();
+        $phone->update($data);
+        return view('show',compact('phone'));
     }
 
     /**
@@ -92,8 +103,10 @@ class PhoneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Phone $phone)
     {
-        //
+      $phone->delete();
+
+      return redirect()->route('phones.index');
     }
 }
